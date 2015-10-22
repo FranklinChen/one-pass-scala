@@ -14,6 +14,12 @@ version := "1.0.0"
 
 scalaVersion := "2.11.7"
 
+scalacOptions ++= Seq(
+  "-unchecked",
+  "-deprecation",
+  "-feature"
+)
+
 libraryDependencies ++= Seq(
   "org.spire-math" %% "cats" % "0.2.0",
   "org.scalaz" %% "scalaz-core" % "7.1.3",
