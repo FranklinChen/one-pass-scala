@@ -3,7 +3,7 @@ package com.franklinchen
 import cats._
 import cats.std.all._
 import cats.syntax.traverse._
-import cats.state.State
+import cats.data.State
 
 import scala.language.higherKinds
 
@@ -90,7 +90,7 @@ object Main {
           Stuff(stuff.sum + x, stuff.length + 1)
         }
       } yield Later(x - average.value)
-    }.run(Stuff(0,0)).run
+    }.run(Stuff(0,0)).value
 
     cell._2
   }
@@ -112,7 +112,7 @@ object Main {
             Stuff(stuff.sum + x, stuff.length + 1)
           }
         } yield Later(x - average)
-      }.run(Stuff(0,0)).run
+      }.run(Stuff(0,0)).value
     }
 
     result
