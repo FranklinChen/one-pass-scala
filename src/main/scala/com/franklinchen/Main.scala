@@ -1,8 +1,7 @@
 package com.franklinchen
 
 import cats._
-import cats.std.all._
-import cats.syntax.traverse._
+import cats.implicits._
 import cats.data.State
 
 import scala.language.higherKinds

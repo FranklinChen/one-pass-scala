@@ -3,7 +3,7 @@ package com.franklinchen
 import org.specs2._
 
 import cats._
-import cats.std.all._
+import cats.implicits._
 
 class MainSpec extends Specification { def is = s2"""
   ${`3 pass subtract average from a list of numbers`}
