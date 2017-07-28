@@ -5,7 +5,8 @@ import org.specs2._
 import cats._
 import cats.implicits._
 
-class MainSpec extends Specification { def is = s2"""
+class MainSpec extends Specification {
+  def is = s2"""
   ${`3 pass subtract average from a list of numbers`}
   ${`1 pass subtract average from a list of numbers`}
   ${`1 pass subtract average from a collection of numbers`}
@@ -29,7 +30,9 @@ class MainSpec extends Specification { def is = s2"""
 
   /** Use a Vector instead of List to illustrate genericity. */
   def `1 pass subtract average from a collection of numbers` = {
-    Main.subtractAverage1PassGeneric(inputVector).map(_.value) ==== outputVector
+    Main
+      .subtractAverage1PassGeneric(inputVector)
+      .map(_.value) ==== outputVector
   }
 
   def `More elegant 1 pass subtract average from a collection of numbers` = {

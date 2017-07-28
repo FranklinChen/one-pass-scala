@@ -7,13 +7,13 @@ import cats.data.State
 import scala.language.higherKinds
 
 object Main {
+
   /**
     3 passes through the input collection.
 
     Simple and intuitive.
     */
-  def subtractAverage3Pass(xs: List[Double])
-      : List[Double] = {
+  def subtractAverage3Pass(xs: List[Double]): List[Double] = {
     // Pass 1 is the sum.
     // Pass 2 is the length.
     val average = xs.sum / xs.length
@@ -33,7 +33,7 @@ object Main {
     Price paid: output is a collection of Later[Double]
     rather than a collection of Double.
     */
-  def subtractAverage1Pass(xs: List[Double]) : List[Later[Double]] = {
+  def subtractAverage1Pass(xs: List[Double]): List[Later[Double]] = {
     var cell: (Stuff, List[Later[Double]]) = null
 
     // Cache to compute only once on demand.
@@ -56,14 +56,14 @@ object Main {
 
     Naive implementation, not tail recursive!
     */
-  def mapAccumL[A, B, S](xs: List[A])(state: S)(f: (S, A) => (S, B))
-      : (S, List[B]) = {
+  def mapAccumL[A, B, S](xs: List[A])(state: S)(
+      f: (S, A) => (S, B)): (S, List[B]) = {
     def go(zs: List[A], state0: S): (S, List[B]) = zs match {
       case Nil => (state0, Nil)
-      case x::xs => {
+      case x :: xs => {
         val (state1, y) = f(state0, x)
         val (state2, ys) = go(xs, state1)
-        (state2, y::ys)
+        (state2, y :: ys)
       }
     }
 
@@ -75,21 +75,24 @@ object Main {
 
     Generic in the collection by using Traverse and State.
     */
-  def subtractAverage1PassGeneric[Collection[_]: Traverse]
-    (xs: Collection[Double]) : Collection[Later[Double]] = {
+  def subtractAverage1PassGeneric[Collection[_]: Traverse](
+      xs: Collection[Double]): Collection[Later[Double]] = {
     var cell: (Stuff, Collection[Later[Double]]) = null
 
     // Cache to compute only once on demand.
     val average = Later(cell._1.sum / cell._1.length)
 
     // Tie the recursive knot.
-    cell = xs.traverseU { x =>
-      for {
-        _ <- State.modify { stuff: Stuff =>
-          Stuff(stuff.sum + x, stuff.length + 1)
-        }
-      } yield Later(x - average.value)
-    }.run(Stuff(0,0)).value
+    cell = xs
+      .traverseU { x =>
+        for {
+          _ <- State.modify { stuff: Stuff =>
+            Stuff(stuff.sum + x, stuff.length + 1)
+          }
+        } yield Later(x - average.value)
+      }
+      .run(Stuff(0, 0))
+      .value
 
     cell._2
   }
@@ -99,19 +102,21 @@ object Main {
 
     But this obscures what is really going on.
     */
-  def subtractAverage1PassCheat[Collection[_]: Traverse]
-    (xs: Collection[Double]) : Collection[Later[Double]] = {
+  def subtractAverage1PassCheat[Collection[_]: Traverse](
+      xs: Collection[Double]): Collection[Later[Double]] = {
     lazy val (Stuff(sum: Double, length: Int), result) = {
       // Cache to compute only once on demand.
       lazy val average = sum / length
 
       xs.traverseU { x =>
-        for {
-          _ <- State.modify { stuff: Stuff =>
-            Stuff(stuff.sum + x, stuff.length + 1)
-          }
-        } yield Later(x - average)
-      }.run(Stuff(0,0)).value
+          for {
+            _ <- State.modify { stuff: Stuff =>
+              Stuff(stuff.sum + x, stuff.length + 1)
+            }
+          } yield Later(x - average)
+        }
+        .run(Stuff(0, 0))
+        .value
     }
 
     result

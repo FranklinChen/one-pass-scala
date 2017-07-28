@@ -12,7 +12,7 @@ description := "One pass lazy knot tying in Scala"
 
 version := "1.0.0"
 
-scalaVersion := "2.12.1"
+scalaVersion := "2.12.3"
 
 scalacOptions ++= Seq(
   "-unchecked",
@@ -22,5 +22,5 @@ scalacOptions ++= Seq(
 
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats" % "0.9.0",
-  "org.specs2" %% "specs2-core" % "3.8.7" % Test
+  "org.specs2" %% "specs2-core" % "3.9.4" % Test
 )
