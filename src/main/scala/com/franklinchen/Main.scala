@@ -84,7 +84,7 @@ object Main {
 
     // Tie the recursive knot.
     cell = xs
-      .traverseU { x =>
+      .traverse { x =>
         for {
           _ <- State.modify { stuff: Stuff =>
             Stuff(stuff.sum + x, stuff.length + 1)
@@ -108,7 +108,7 @@ object Main {
       // Cache to compute only once on demand.
       lazy val average = sum / length
 
-      xs.traverseU { x =>
+      xs.traverse { x =>
           for {
             _ <- State.modify { stuff: Stuff =>
               Stuff(stuff.sum + x, stuff.length + 1)

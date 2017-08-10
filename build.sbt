@@ -17,10 +17,11 @@ scalaVersion := "2.12.3"
 scalacOptions ++= Seq(
   "-unchecked",
   "-deprecation",
-  "-feature"
+  "-feature",
+  "-Ypartial-unification"
 )
 
 libraryDependencies ++= Seq(
-  "org.typelevel" %% "cats" % "0.9.0",
+  "org.typelevel" %% "cats-core" % "1.0.0-MF",
   "org.specs2" %% "specs2-core" % "3.9.4" % Test
 )
